@@ -1,3 +1,4 @@
+package edu.eci.arsw.primefinder;
 public class PrimeFinderThread extends Thread {
 
     private int a, b;
