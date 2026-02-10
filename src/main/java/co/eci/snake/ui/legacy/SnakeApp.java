@@ -48,7 +48,7 @@ public final class SnakeApp extends JFrame {
     this.clock = new GameClock(60, () -> SwingUtilities.invokeLater(gamePanel::repaint));
 
     var exec = Executors.newVirtualThreadPerTaskExecutor();
-    snakes.forEach(s -> exec.submit(new SnakeRunner(s, board)));
+    snakes.forEach(s -> exec.submit(new SnakeRunner(s, board,clock)));
 
     actionButton.addActionListener((ActionEvent e) -> togglePause());
 
@@ -210,7 +210,7 @@ public final class SnakeApp extends JFrame {
       }
 
       // Serpientes
-      var snakes = snakesSupplier.get();
+      List<Snake> snakes = snakesSupplier.get();
       int idx = 0;
       for (Snake s : snakes) {
         var body = s.snapshot().toArray(new Position[0]);
