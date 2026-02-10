@@ -1,47 +1,38 @@
-package edu.eci.arsw.primefinder;
+public class PrimeFinderThread extends Thread {
 
-import java.util.LinkedList;
-import java.util.List;
+    private int a, b;
+    private List<Integer> primes;
+    private PauseControl control;
 
-public class PrimeFinderThread extends Thread{
+    public PrimeFinderThread(int a, int b, PauseControl control) {
+        this.primes = new LinkedList<>();
+        this.a = a;
+        this.b = b;
+        this.control = control;
+    }
 
-	
-	int a,b;
-	
-	private List<Integer> primes;
-	
-	public PrimeFinderThread(int a, int b) {
-		super();
-                this.primes = new LinkedList<>();
-		this.a = a;
-		this.b = b;
-	}
+    @Override
+    public void run() {
+        for (int i = a; i < b; i++) {
 
-        @Override
-	public void run(){
-            for (int i= a;i < b;i++){						
-                if (isPrime(i)){
-                    primes.add(i);
-                    System.out.println(i);
-                }
+            control.awaitIfPaused();
+
+            if (isPrime(i)) {
+                primes.add(i);
             }
-	}
-	
-	boolean isPrime(int n) {
-	    boolean ans;
-            if (n > 2) { 
-                ans = n%2 != 0;
-                for(int i = 3;ans && i*i <= n; i+=2 ) {
-                    ans = n % i != 0;
-                }
-            } else {
-                ans = n == 2;
-            }
-	    return ans;
-	}
+        }
+    }
 
-	public List<Integer> getPrimes() {
-		return primes;
-	}
-	
+    public List<Integer> getPrimes() {
+        return primes;
+    }
+
+    boolean isPrime(int n) {
+        if (n <= 1) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
+        for (int i = 3; i * i <= n; i += 2)
+            if (n % i == 0) return false;
+        return true;
+    }
 }

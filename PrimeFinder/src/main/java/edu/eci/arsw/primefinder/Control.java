@@ -1,3 +1,4 @@
+package edu.eci.arsw.primefinder;
 public class Control extends Thread {
 
     private static final int NTHREADS = 3;
